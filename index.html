@@ -1,174 +1,128 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-<title>KTH TRINITY Payment Proof (Demo)</title>
-<style>
-:root{
-  --brand:#111; --accent:#ffd400; --bg:#f7f7f8; --card:#ffffff; --muted:#666; --line:#e6e6e6; --ok:#16a34a; --warn:#f59e0b; --err:#ef4444;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Apple SD Gothic Neo,'Noto Sans KR',sans-serif;color:#111}
-.wrap{max-width:680px;margin:0 auto;padding:16px}
-.header{display:flex;align-items:center;gap:10px;margin:10px 0 16px}
-.logo{width:36px;height:36px;border-radius:10px;background:var(--brand);position:relative}
-.logo::after{content:"K";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800}
-.h-title{font-size:18px;font-weight:800}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.03)}
-.form{padding:14px}
-.row{display:flex;gap:10px}
-.input{display:flex;flex-direction:column;margin-bottom:12px;flex:1}
-.input label{font-size:12px;color:#444;margin:6px 2px}
-.input input,.input select, .input textarea{
-  width:100%;padding:12px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:15px
-}
-.btns{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
-.btn{flex:1;appearance:none;border:0;border-radius:12px;padding:12px 14px;font-weight:700}
-.btn.primary{background:var(--brand);color:#fff}
-.btn.ghost{background:#fff;border:1px solid var(--line)}
-.notice{font-size:12px;color:var(--muted);margin:6px 2px}
-.receipt{padding:16px;border-top:1px dashed var(--line);background:linear-gradient(#fff,#fff) padding-box, repeating-linear-gradient(90deg,#eee 0 6px,transparent 6px 12px) border-box}
-.r-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.badge{font-size:12px;padding:6px 10px;border-radius:999px;background:#f1f5f9;border:1px solid var(--line)}
-.badge.ok{background:#eaffef;border-color:#b7f0c0;color:#117a2a}
-.grid{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:14px}
-.total{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-weight:800}
-.small{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
-.kicker{display:inline-block;background:var(--accent);color:#111;font-weight:900;padding:2px 8px;border-radius:8px;margin-left:6px}
-.help{font-size:12px;color:#475569;margin-top:6px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KTH TRINITY Payment</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background-color: #ffffff;
+      color: #111;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 24px 16px 10px;
+      font-weight: 700;
+      font-size: 24px;
+      color: #111;
+    }
+    header span {
+      color: #FFD400;
+    }
+    .info {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    .info div {
+      text-align: center;
+      flex: 1;
+      line-height: 1.4;
+    }
+    .highlight {
+      color: #FFD400;
+      font-weight: 600;
+    }
+    .section {
+      padding: 24px;
+      text-align: center;
+    }
+    .card {
+      background: #fafafa;
+      border-radius: 16px;
+      padding: 24px;
+      margin: 16px auto;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+    .button {
+      background-color: #111;
+      color: #FFD400;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 0;
+      font-size: 18px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .button:hover {
+      background-color: #FFD400;
+      color: #111;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: #fff;
+      border-top: 1px solid #eee;
+      padding: 10px 0;
+      font-size: 13px;
+    }
+    .bottom-nav div {
+      text-align: center;
+      color: #555;
+    }
+    .bottom-nav div.active {
+      color: #111;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="header">
-    <div class="logo"></div>
-    <div class="h-title">KTH TRINITY Payment <span class="kicker">DEMO</span></div>
+  <header>
+    <span>KTH TRINITY</span> Payment
+  </header>
+
+  <div class="info">
+    <div>💳 상대방 동의 불필요</div>
+    <div>💰 서비스 이용료 <span class="highlight">4%</span></div>
+    <div>📅 주말/공휴일 운영</div>
   </div>
 
-  <div class="card form">
-    <div class="row">
-      <div class="input">
-        <label>고객 이름</label>
-        <input id="name" placeholder="예: 홍길동" autocomplete="name">
-      </div>
-      <div class="input">
-        <label>결제 유형</label>
-        <select id="ptype">
-          <option value="Rent">Rent</option>
-          <option value="Tuition">Tuition</option>
-          <option value="Utility">Utility</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+  <div class="section">
+    <div class="card">
+      <h3>결제 등록</h3>
+      <p>해외 생활비, 월세, 관리비 등을 카드로 간편 결제하세요.</p>
+      <button class="button" onclick="location.href='form.html'">결제 등록하기</button>
     </div>
-    <div class="row">
-      <div class="input">
-        <label>금액 (THB)</label>
-        <input id="amount" type="number" inputmode="decimal" placeholder="예: 28500">
-      </div>
-      <div class="input">
-        <label>수수료 (THB)</label>
-        <input id="fee" type="number" inputmode="decimal" placeholder="예: 200" value="0">
-      </div>
+
+    <div class="card">
+      <h3>Proof 보기</h3>
+      <p>결제 내역 확인 및 증빙 문서를 확인할 수 있습니다.</p>
+      <button class="button" onclick="location.href='proof.html'">증빙 보기</button>
     </div>
-    <div class="input">
-      <label>메모 (선택)</label>
-      <input id="memo" placeholder="예: 콘도 10월 관리비">
-    </div>
-    <div class="btns">
-      <button class="btn primary" id="previewBtn">증빙 미리보기</button>
-      <button class="btn ghost" id="clearBtn">초기화</button>
-      <button class="btn ghost" id="printBtn">PDF 저장/인쇄</button>
-    </div>
-    <div class="help">※ 실제 결제는 발생하지 않습니다. 데모용으로 입력·버튼 동작과 Proof 형식만 확인할 수 있습니다.</div>
   </div>
 
-  <div class="card receipt" id="receipt" style="display:none;">
-    <div class="r-head">
-      <div>
-        <strong>Payment Proof</strong>
-        <div class="small" id="rid"></div>
-      </div>
-      <div class="badge ok" id="rstatus">CONFIRMED</div>
-    </div>
-
-    <div class="grid">
-      <div>고객 이름</div><div id="rname">-</div>
-      <div>결제 유형</div><div id="rtype">-</div>
-      <div>금액</div><div id="ramount">-</div>
-      <div>수수료</div><div id="rfee">-</div>
-      <div>합계</div><div id="rtotal">-</div>
-      <div>일시</div><div id="rdate">-</div>
-      <div>메모</div><div id="rmemo">-</div>
-    </div>
-
-    <div class="total"><span>총 청구</span><span id="rtotal2">-</span></div>
-    <div class="small">KTH TRINITY PAYMENT • Bangkok, Thailand · support@kthtrinity.com</div>
+  <div class="bottom-nav">
+    <div class="active">🏠 홈</div>
+    <div>🧾 결제등록</div>
+    <div>📄 증빙</div>
+    <div>📘 가이드</div>
+    <div>💬 문의</div>
   </div>
-</div>
-
-<script>
-const $=id=>document.getElementById(id);
-const nf = new Intl.NumberFormat('ko-KR');
-
-function genId(){
-  const d=new Date();
-  const pad=n=>String(n).padStart(2,'0');
-  const rand=String(Math.floor(Math.random()*10000)).padStart(4,'0');
-  return `KTHPAY-${d.getFullYear()}-${pad(d.getMonth()+1)}${pad(d.getDate())}-${rand}`;
-}
-function nowStr(){
-  const d=new Date();
-  const tz='Asia/Bangkok';
-  return new Intl.DateTimeFormat('ko-KR',{
-    dateStyle:'medium', timeStyle:'short', timeZone:tz
-  }).format(d) + ' (Bangkok)';
-}
-
-$('previewBtn').onclick=()=>{
-  const name=$('name').value.trim();
-  const amount=parseFloat($('amount').value||'0');
-  const fee=parseFloat($('fee').value||'0');
-  const ptype=$('ptype').value;
-  const memo=$('memo').value.trim();
-
-  if(!name || !amount){ alert('이름과 금액을 입력하세요.'); return; }
-
-  $('rname').textContent=name;
-  $('rtype').textContent=ptype;
-  $('ramount').textContent=`${nf.format(amount)} THB`;
-  $('rfee').textContent=`${nf.format(fee)} THB`;
-  $('rtotal').textContent=`${nf.format(amount+fee)} THB`;
-  $('rtotal2').textContent=`${nf.format(amount+fee)} THB`;
-  $('rdate').textContent=nowStr();
-  $('rmemo').textContent=memo||'-';
-  $('rid').textContent=genId();
-  $('rstatus').textContent='CONFIRMED';
-  $('receipt').style.display='block';
-
-  // 값 기억
-  localStorage.setItem('kth_demo', JSON.stringify({name,amount,fee,ptype,memo}));
-};
-$('clearBtn').onclick=()=>{
-  ['name','amount','fee','memo'].forEach(id=>$(id).value='');
-  $('ptype').value='Rent';
-  $('receipt').style.display='none';
-  localStorage.removeItem('kth_demo');
-};
-$('printBtn').onclick=()=>{ window.print(); };
-
-// 로컬 저장된 값 복원
-(function(){
-  try{
-    const v=JSON.parse(localStorage.getItem('kth_demo')||'{}');
-    if(v.name) $('name').value=v.name;
-    if(v.amount) $('amount').value=v.amount;
-    if(v.fee) $('fee').value=v.fee;
-    if(v.ptype) $('ptype').value=v.ptype;
-    if(v.memo) $('memo').value=v.memo;
-  }catch(e){}
-})();
-</script>
 </body>
 </html>
