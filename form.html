@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KTH TRINITY 결제 등록</title>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #fafafa;
+      margin: 0;
+      padding: 24px;
+      color: #111;
+    }
+    h1 {
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 4px;
+    }
+    .amount-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .amount-box div {
+      flex: 1;
+    }
+    button {
+      width: 100%;
+      background: #ffd400;
+      border: none;
+      color: #111;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 14px;
+      border-radius: 10px;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>KTH TRINITY Payment 등록</h1>
+
+  <label>계약유형</label>
+  <select id="type">
+    <option value="부동산 임대차">부동산 임대차</option>
+    <option value="교육비">교육비</option>
+    <option value="청소비">청소비</option>
+    <option value="기타">기타</option>
+  </select>
+
+  <label>이름</label>
+  <input type="text" id="name" placeholder="송금자명" />
+
+  <label>계좌번호</label>
+  <input type="text" id="account" placeholder="은행명 + 계좌번호" />
+
+  <label>결제금액</label>
+  <div class="amount-box">
+    <div>
+      <input type="number" id="krw" placeholder="₩ 원화 금액" />
+    </div>
+    <div>
+      <input type="number" id="thb" placeholder="฿ 바트 금액" />
+    </div>
+  </div>
+
+  <label>확인서류 (선택)</label>
+  <input type="file" id="file" disabled style="opacity:0.6;" />
+
+  <button onclick="saveData()">등록하기</button>
+
+  <script>
+    const rate = 38; // 1 THB = 38 KRW
+
+    const krwInput = document.getElementById('krw');
+    const thbInput = document.getElementById('thb');
+
+    krwInput.addEventListener('input', () => {
+      const krw = parseFloat(krwInput.value) || 0;
+      thbInput.value = (krw / rate).toFixed(2);
+    });
+
+    thbInput.addEventListener('input', () => {
+      const thb = parseFloat(thbInput.value) || 0;
+      krwInput.value = (thb * rate).toFixed(0);
+    });
+
+    function saveData() {
+      const type = document.getElementById('type').value;
+      const name = document.getElementById('name').value;
+      const account = document.getElementById('account').value;
+      const krw = document.getElementById('krw').value;
+      const thb = document.getElementById('thb').value;
+
+      localStorage.setItem('paymentData', JSON.stringify({ type, name, account, krw, thb }));
+      window.location.href = 'proof.html';
+    }
+  </script>
+</body>
+</html>
