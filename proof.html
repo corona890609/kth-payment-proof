@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KTH TRINITY 결제 Proof</title>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #fdfdfd;
+      margin: 0;
+      padding: 24px;
+      color: #111;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      padding: 24px;
+      margin-top: 40px;
+      display: inline-block;
+      text-align: left;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .label {
+      font-weight: 600;
+      color: #555;
+    }
+    .value {
+      color: #111;
+    }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      background: #ffd400;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>결제 Proof</h1>
+  <div class="card">
+    <div class="row"><div class="label">계약유형</div><div class="value" id="type"></div></div>
+    <div class="row"><div class="label">이름</div><div class="value" id="name"></div></div>
+    <div class="row"><div class="label">계좌번호</div><div class="value" id="account"></div></div>
+    <div class="row"><div class="label">결제금액(₩)</div><div class="value" id="krw"></div></div>
+    <div class="row"><div class="label">결제금액(฿)</div><div class="value" id="thb"></div></div>
+  </div>
+
+  <button onclick="back()">← 다시 입력</button>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('paymentData'));
+    if (data) {
+      document.getElementById('type').textContent = data.type;
+      document.getElementById('name').textContent = data.name;
+      document.getElementById('account').textContent = data.account;
+      document.getElementById('krw').textContent = Number(data.krw).toLocaleString() + ' 원';
+      document.getElementById('thb').textContent = Number(data.thb).toLocaleString() + ' ฿';
+    }
+    function back() {
+      window.location.href = 'form.html';
+    }
+  </script>
+</body>
+</html>
