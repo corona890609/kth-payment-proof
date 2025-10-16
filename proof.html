@@ -1,79 +1,162 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KTH TRINITY 결제 Proof</title>
-  <style>
-    body {
-      font-family: 'Pretendard', sans-serif;
-      background: #fdfdfd;
-      margin: 0;
-      padding: 24px;
-      color: #111;
-      text-align: center;
-    }
-    .card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
-      padding: 24px;
-      margin-top: 40px;
-      display: inline-block;
-      text-align: left;
-    }
-    h1 {
-      text-align: center;
-      color: #222;
-    }
-    .row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .label {
-      font-weight: 600;
-      color: #555;
-    }
-    .value {
-      color: #111;
-    }
-    button {
-      width: 100%;
-      margin-top: 24px;
-      background: #ffd400;
-      border: none;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KTH TRINITY Payment 등록</title>
+<style>
+:root {
+  --brand: #111;
+  --accent: #ffd400;
+  --bg: #f8f8f8;
+  --card: #fff;
+  --line: #e5e5e5;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #111;
+}
+.header {
+  padding: 18px 16px;
+  font-weight: 800;
+  font-size: 22px;
+}
+.form {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+.form input, .form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+.button {
+  width: 100%;
+  background: var(--accent);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+}
+.notice {
+  background: #fff7c0;
+  color: #333;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin: 10px 16px;
+  border-radius: 8px;
+}
+.result {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+</style>
 </head>
 <body>
-  <h1>결제 Proof</h1>
-  <div class="card">
-    <div class="row"><div class="label">계약유형</div><div class="value" id="type"></div></div>
-    <div class="row"><div class="label">이름</div><div class="value" id="name"></div></div>
-    <div class="row"><div class="label">계좌번호</div><div class="value" id="account"></div></div>
-    <div class="row"><div class="label">결제금액(₩)</div><div class="value" id="krw"></div></div>
-    <div class="row"><div class="label">결제금액(฿)</div><div class="value" id="thb"></div></div>
+
+<div class="header">💳 KTH TRINITY Payment 등록</div>
+
+<div class="notice">
+상대방 동의 없이 바로 결제 가능하며, 서비스 이용료는 4%입니다.<br>
+(기준 환율: <b>1 THB = 38원</b>)<br>
+※ 실제 결제가 아닌 데모 환경입니다.
+</div>
+
+<div class="form">
+  <label>계약유형</label>
+  <select id="contractType">
+    <option value="임대차">부동산 임대차</option>
+    <option value="교육비">교육비</option>
+    <option value="용역비">용역비</option>
+    <option value="기타">기타</option>
+  </select>
+
+  <label>이름</label>
+  <input type="text" id="name" placeholder="예: 홍길동">
+
+  <label>상대방 은행정보</label>
+  <input type="text" id="bankInfo" placeholder="예: 카시콘은행 123-456-7890">
+
+  <label>결제금액 입력</label>
+  <div style="display:flex; gap:6px;">
+    <input type="number" id="amount_krw" placeholder="₩ 원화 금액" step="any" oninput="convertToTHB()">
+    <input type="number" id="amount_thb" placeholder="฿ 바트 금액" step="any" oninput="convertToKRW()">
   </div>
 
-  <button onclick="back()">← 다시 입력</button>
+  <label>확인서류 (선택)</label>
+  <input type="file" id="fileUpload">
 
-  <script>
-    const data = JSON.parse(localStorage.getItem('paymentData'));
-    if (data) {
-      document.getElementById('type').textContent = data.type;
-      document.getElementById('name').textContent = data.name;
-      document.getElementById('account').textContent = data.account;
-      document.getElementById('krw').textContent = Number(data.krw).toLocaleString() + ' 원';
-      document.getElementById('thb').textContent = Number(data.thb).toLocaleString() + ' ฿';
-    }
-    function back() {
-      window.location.href = 'form.html';
-    }
-  </script>
+  <div class="result" id="resultBox">
+    💡 환산 결과가 여기에 표시됩니다.
+  </div>
+
+  <button class="button" onclick="register()">등록하기</button>
+</div>
+
+<script>
+const rate = 38; // 고정환율
+
+function convertToTHB() {
+  const krw = parseFloat(document.getElementById("amount_krw").value);
+  if (!isNaN(krw)) {
+    const thb = (krw / rate).toFixed(2);
+    document.getElementById("amount_thb").value = thb;
+    document.getElementById("resultBox").innerHTML = 
+      `₩ ${krw.toLocaleString()} = ฿ ${thb} (기준환율 1THB = 38원)`;
+  }
+}
+
+function convertToKRW() {
+  const thb = parseFloat(document.getElementById("amount_thb").value);
+  if (!isNaN(thb)) {
+    const krw = (thb * rate).toFixed(0);
+    document.getElementById("amount_krw").value = krw;
+    document.getElementById("resultBox").innerHTML = 
+      `฿ ${thb.toLocaleString()} = ₩ ${krw.toLocaleString()} (기준환율 1THB = 38원)`;
+  }
+}
+
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const bank = document.getElementById("bankInfo").value.trim();
+  const krw = document.getElementById("amount_krw").value.trim();
+
+  if (!name || !bank || !krw) {
+    alert("이름, 은행정보, 금액을 모두 입력해주세요.");
+    return;
+  }
+
+  const thb = (parseFloat(krw) / rate).toFixed(2);
+  document.getElementById("resultBox").innerHTML = `
+    ✅ <b>${name}</b>님의 결제 등록 완료<br>
+    ┗ 송금 대상: ${bank}<br>
+    ┗ 금액: ₩ ${parseFloat(krw).toLocaleString()} (≈ ฿ ${thb})<br>
+    ┗ 서비스 수수료 4% 포함 시 총 결제액: ₩ ${(krw * 1.04).toLocaleString()}
+  `;
+}
+</script>
+
 </body>
 </html>
+
+  
