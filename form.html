@@ -1,87 +1,158 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KTH TRINITY Payment 등록</title>
-  <style>
-    body { font-family: 'Noto Sans KR', sans-serif; background: #fff; margin: 0; padding: 20px; color:#111; }
-    h2 { text-align:center; margin-bottom:24px; }
-    label { display:block; margin:12px 0 6px; font-weight:600; }
-    input, select {
-      width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; font-size:15px;
-    }
-    .row { display:flex; gap:10px; }
-    .row input { flex:1; }
-    button {
-      width:100%; background:#FFD400; color:#111; border:none;
-      padding:16px; border-radius:12px; font-weight:700; font-size:17px; margin-top:20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KTH TRINITY Payment 등록</title>
+<style>
+:root {
+  --brand: #111;
+  --accent: #ffd400;
+  --bg: #f8f8f8;
+  --card: #fff;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #111;
+}
+.header {
+  padding: 20px 16px;
+  font-weight: 800;
+  font-size: 22px;
+}
+.notice {
+  background: #fff7c0;
+  color: #333;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin: 10px 16px;
+  border-radius: 8px;
+}
+.form {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+.form input, .form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+.button {
+  width: 100%;
+  background: var(--accent);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+}
+.result {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+</style>
 </head>
 <body>
-  <h2>KTH TRINITY Payment 등록</h2>
 
-  <form id="paymentForm">
-    <label>계약유형</label>
-    <select id="type">
-      <option>부동산 임대차</option>
-      <option>교육비</option>
-      <option>서비스 이용료</option>
-      <option>기타</option>
-    </select>
+<div class="header">💳 KTH TRINITY Payment 등록</div>
 
-    <label>이름</label>
-    <input type="text" id="name" placeholder="송금자명" required>
+<div class="notice">
+상대방 동의 없이 바로 결제 가능하며 서비스 이용료는 4%입니다.<br>
+(기준 환율: <b>1 THB = 38원</b>)<br>
+※ 실제 결제가 아닌 데모 환경입니다.
+</div>
 
-    <label>상대방 은행정보</label>
-    <input type="text" id="account" placeholder="예: Kasikorn Bank 123-456-7890" required>
+<div class="form">
+  <label>계약유형</label>
+  <select id="contractType">
+    <option value="임대차">부동산 임대차</option>
+    <option value="교육비">교육비</option>
+    <option value="용역비">용역비</option>
+    <option value="기타">기타</option>
+  </select>
 
-    <label>결제금액</label>
-    <div class="row">
-      <input type="number" id="krw" placeholder="₩ 원화 금액" oninput="convertToTHB()">
-      <input type="number" id="thb" placeholder="฿ 바트 금액" oninput="convertToKRW()">
-    </div>
+  <label>이름</label>
+  <input type="text" id="name" placeholder="예: 홍길동">
 
-    <label>확인서류 (선택)</label>
-    <input type="file" id="file">
+  <label>상대방 은행정보</label>
+  <input type="text" id="bankInfo" placeholder="예: 카시콘은행 123-456-7890">
 
-    <button type="submit">등록하기</button>
-  </form>
+  <label>결제금액 입력</label>
+  <div style="display:flex; gap:6px;">
+    <input type="text" id="amount_krw" placeholder="₩ 원화 금액" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" oninput="convertToTHB()">
+    <input type="text" id="amount_thb" placeholder="฿ 바트 금액" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" oninput="convertToKRW()">
+  </div>
 
-  <script>
-    const rate = 38; // 고정환율
+  <label>확인서류 (선택)</label>
+  <input type="file" id="fileUpload">
 
-    function convertToTHB() {
-      const krw = document.getElementById('krw').value;
-      document.getElementById('thb').value = krw ? (krw / rate).toFixed(2) : '';
-    }
+  <div class="result" id="resultBox">
+    💡 환산 결과가 여기에 표시됩니다.
+  </div>
 
-    function convertToKRW() {
-      const thb = document.getElementById('thb').value;
-      document.getElementById('krw').value = thb ? (thb * rate).toFixed(0) : '';
-    }
+  <button class="button" onclick="register()">등록하기</button>
+</div>
 
-    document.getElementById('paymentForm').addEventListener('submit', function(e){
-      e.preventDefault();
+<script>
+const rate = 38; // 기준환율
 
-      const record = {
-        type: document.getElementById('type').value,
-        name: document.getElementById('name').value,
-        account: document.getElementById('account').value,
-        krw: document.getElementById('krw').value,
-        thb: document.getElementById('thb').value,
-        time: new Date().toLocaleString(),
-      };
+function convertToTHB() {
+  const krw = parseFloat(document.getElementById("amount_krw").value.replace(/,/g,''));
+  if (!isNaN(krw)) {
+    const thb = (krw / rate).toFixed(2);
+    document.getElementById("amount_thb").value = thb;
+    document.getElementById("resultBox").innerHTML = `₩ ${krw.toLocaleString()} → ฿ ${thb} (1 THB = 38원)`;
+  }
+}
 
-      // LocalStorage 저장
-      const existing = JSON.parse(localStorage.getItem('transactions') || '[]');
-      existing.unshift(record);
-      localStorage.setItem('transactions', JSON.stringify(existing));
+function convertToKRW() {
+  const thb = parseFloat(document.getElementById("amount_thb").value.replace(/,/g,''));
+  if (!isNaN(thb)) {
+    const krw = (thb * rate).toFixed(0);
+    document.getElementById("amount_krw").value = krw;
+    document.getElementById("resultBox").innerHTML = `฿ ${thb.toLocaleString()} → ₩ ${krw.toLocaleString()} (1 THB = 38원)`;
+  }
+}
 
-      alert('거래가 등록되었습니다.');
-      window.location.href = 'index.html';
-    });
-  </script>
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const bank = document.getElementById("bankInfo").value.trim();
+  const krw = parseFloat(document.getElementById("amount_krw").value);
+
+  if (!name || !bank || isNaN(krw)) {
+    alert("이름, 은행정보, 금액을 정확히 입력해주세요.");
+    return;
+  }
+
+  const thb = (krw / rate).toFixed(2);
+  const total = (krw * 1.04).toFixed(0);
+  document.getElementById("resultBox").innerHTML = `
+    ✅ <b>${name}</b>님의 결제 등록 완료<br>
+    ┗ 송금 대상: ${bank}<br>
+    ┗ 결제 금액: ₩ ${krw.toLocaleString()} (≈ ฿ ${thb})<br>
+    ┗ 수수료 4% 포함 총액: ₩ ${parseFloat(total).toLocaleString()}
+  `;
+}
+</script>
+
 </body>
 </html>
