@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>KTH TRINITY Payment</title>
 <style>
 :root {
@@ -10,43 +10,58 @@
 }
 *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
 body{margin:0;background:var(--bg);color:#111;display:flex;flex-direction:column;min-height:100vh;}
-header{display:flex;align-items:center;justify-content:center;padding:14px;font-weight:700;font-size:18px;background:#fff;border-bottom:1px solid #eee;}
-.info{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;font-size:13px;color:#555;padding:10px;background:#fafafa;border-bottom:1px solid #eee;}
+header{padding:14px 16px;font-weight:800;font-size:20px;background:#fff;border-bottom:1px solid #eee;}
+.top-box{display:flex;justify-content:space-around;align-items:center;padding:14px;background:#fff;}
+.top-box div{flex:1;text-align:center;}
+.top-box span{display:block;font-weight:700;font-size:16px;margin-top:4px;}
+.notice{background:#fff3cd;padding:10px;font-size:13px;color:#333;text-align:center;border-top:1px solid #eee;border-bottom:1px solid #eee;}
 .wrap{flex:1;padding:16px;max-width:720px;margin:auto;}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.05);}
-.card h3{margin:0 0 6px;font-size:16px;font-weight:700;}
-.card p{margin:0 0 10px;font-size:13px;color:#555;}
-.button{display:inline-block;background:var(--accent);color:#111;border:none;padding:10px 16px;border-radius:8px;font-weight:600;}
-.button:active{opacity:0.8;}
-.plus{font-size:28px;background:var(--accent);color:#111;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:fixed;bottom:80px;right:20px;box-shadow:0 4px 10px rgba(0,0,0,0.15);}
-.bottom-nav{display:flex;justify-content:space-around;align-items:center;padding:12px 0;border-top:1px solid #ddd;background:#fff;font-size:13px;}
+.section-title{font-weight:700;margin:16px 0 8px;}
+.item{background:#fff;border:1px solid #eee;border-radius:10px;margin-bottom:10px;padding:12px 14px;box-shadow:0 2px 5px rgba(0,0,0,0.05);}
+.item strong{font-size:15px;}
+.item small{display:block;font-size:12px;color:#666;margin-top:4px;}
+.item-btns{display:flex;justify-content:space-between;margin-top:8px;font-size:13px;}
+.item-btns span{color:#111;font-weight:600;}
+.bottom-nav{display:flex;justify-content:space-around;align-items:center;padding:10px 0;border-top:1px solid #ddd;background:#fff;font-size:12px;position:fixed;bottom:0;left:0;width:100%;}
 .bottom-nav div{display:flex;flex-direction:column;align-items:center;color:#555;}
-.bottom-nav .active{color:#111;font-weight:600;}
-.list-item{border:1px solid #eee;background:#fff;border-radius:10px;padding:10px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
-.list-item strong{font-size:14px;}
-.list-item small{color:#666;font-size:12px;}
+.bottom-nav .active{color:#111;font-weight:700;}
+.plus{position:fixed;bottom:70px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,0.15);}
 </style>
 </head>
 <body>
 
 <header>KTH TRINITY Payment</header>
 
-<div class="info">
-  <div>📱 상대방 동의 불필요</div>
-  <div>💸 서비스 이용료 4%</div>
-  <div>⚡ 무료 번개송금</div>
-  <div>📅 주말/공휴일 운영</div>
+<div class="top-box">
+  <div>오늘 송금가능<br><span>200,000원</span></div>
+  <div>이달 송금가능<br><span>500,000원</span></div>
+</div>
+
+<div class="notice">
+  💡 실제 결제는 발생하지 않습니다. 데모용으로 입력과 증빙 확인만 가능합니다.
 </div>
 
 <div class="wrap">
-  <div class="card">
-    <h3>거래 등록</h3>
-    <p>해외 생활비, 월세, 관리비 등을 카드로 간편 결제하세요.</p>
-    <button class="button" onclick="location.href='form.html'">등록하기</button>
+  <div class="section-title">거래완료</div>
+
+  <div class="item">
+    <strong>홍길동 콘도 월세</strong>
+    <small>결제완료 · 28,500 THB (1,083,000원)</small>
+    <div class="item-btns">
+      <span>결제하기</span>
+      <span onclick="location.href='proof.html'">⚡ 송금하기 / 결제관리</span>
+    </div>
   </div>
 
-  <h3 style="margin:16px 0 8px;">거래 내역</h3>
-  <div id="list"></div>
+  <div class="item">
+    <strong>수도요금 10월</strong>
+    <small>결제완료 · 1,200 THB (45,600원)</small>
+    <div class="item-btns">
+      <span>결제하기</span>
+      <span onclick="location.href='proof.html'">⚡ 송금하기 / 결제관리</span>
+    </div>
+  </div>
+
 </div>
 
 <div class="plus" onclick="location.href='form.html'">＋</div>
@@ -55,31 +70,9 @@ header{display:flex;align-items:center;justify-content:center;padding:14px;font-
   <div class="active">🏠 홈</div>
   <div onclick="location.href='form.html'">🧾 거래등록</div>
   <div onclick="location.href='proof.html'">📄 증빙</div>
-  <div>📘 가이드</div>
+  <div onclick="location.href='otc.html'">🪙 OTC서비스</div>
   <div>💬 문의</div>
 </div>
-
-<script>
-const list = document.getElementById("list");
-let data = JSON.parse(localStorage.getItem("kth_transactions") || "[]");
-
-function renderList() {
-  list.innerHTML = "";
-  if (data.length === 0) {
-    list.innerHTML = "<p style='color:#777;font-size:13px;'>등록된 거래가 없습니다.</p>";
-  } else {
-    data.forEach((t,i)=>{
-      const div=document.createElement("div");
-      div.className="list-item";
-      div.innerHTML=`<div><strong>${t.name}</strong><br><small>${t.memo||t.type}</small></div>
-                     <div><small>${t.amount_thb} THB</small><br><small>(${t.amount_krw} KRW)</small></div>`;
-      div.onclick=()=>location.href="proof.html";
-      list.appendChild(div);
-    });
-  }
-}
-renderList();
-</script>
 
 </body>
 </html>
