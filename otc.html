@@ -85,7 +85,7 @@ body {
 
 <div class="form">
   <label>이름</label>
-  <input type="text" placeholder="예: 홍길동">
+  <input type="text" id="name" placeholder="예: 홍길동">
 
   <label>지급 통화</label>
   <select id="currency">
@@ -94,13 +94,13 @@ body {
   </select>
 
   <label>결제금액 입력</label>
-  <input type="number" id="amount" placeholder="금액 입력">
+  <input type="number" id="amount" placeholder="금액 입력" step="any">
 
   <label>환율 (1 THB = 38원)</label>
-  <input type="text" id="rate" value="38" readonly>
+  <input type="number" id="rate" value="38" readonly step="any">
 
   <label>USDT 시세 (Bitkub 기준)</label>
-  <input type="text" id="usdt" value="36.5" readonly>
+  <input type="number" id="usdt" value="36.5" readonly step="any">
 
   <div class="result" id="resultBox">
     💡 변환 결과가 여기에 표시됩니다.
@@ -111,24 +111,32 @@ body {
 
 <script>
 function calculate() {
-  const amount = parseFloat(document.getElementById('amount').value);
-  const currency = document.getElementById('currency').value;
+  const amountField = document.getElementById("amount");
+  const currencyField = document.getElementById("currency");
+  const resultBox = document.getElementById("resultBox");
+
+  const amount = parseFloat(amountField.value);
+  const currency = currencyField.value;
   const rate = 38; // 고정 환율
   const usdt = 36.5; // Bitkub 시세
 
-  if (!amount || amount <= 0) {
-    document.getElementById('resultBox').innerHTML = "금액을 입력하세요.";
+  if (isNaN(amount) || amount <= 0) {
+    resultBox.innerHTML = "⚠️ 금액을 입력하세요.";
     return;
   }
 
-  let thbAmount = currency === "KRW" ? (amount / rate) : amount;
-  let usdtQty = (thbAmount / usdt).toFixed(2);
-  let resultText = `
-  💰 계산 결과<br>
-  - 바트 환산: ${thbAmount.toLocaleString()} THB<br>
-  - 예상 코인 수량: <b>${usdtQty} USDT</b>
+  // 원화 입력 시 바트로 변환
+  let thbAmount = (currency === "KRW") ? (amount / rate) : amount;
+
+  // USDT 수량 계산 (소수점 허용)
+  let usdtQty = (thbAmount / usdt).toFixed(4);
+
+  // 결과 표시
+  resultBox.innerHTML = `
+  💰 <b>${currency === "KRW" ? amount.toLocaleString() + " 원" : thbAmount.toLocaleString() + " THB"}</b> 기준<br>
+  ┗ 환산금액: <b>${thbAmount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} THB</b><br>
+  ┗ 예상 수량: <b>${usdtQty} USDT</b>
   `;
-  document.getElementById('resultBox').innerHTML = resultText;
 }
 </script>
 
