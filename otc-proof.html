@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KTH TRINITY OTC Proof</title>
+<style>
+:root {
+  --brand: #111;
+  --accent: #ffd400;
+  --bg: #fafafa;
+  --card: #fff;
+  --line: #eee;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #111;
+}
+.header {
+  text-align: left;
+  padding: 20px 16px 10px;
+  font-weight: 800;
+  font-size: 22px;
+}
+.notice {
+  background: #fff7c0;
+  color: #333;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin: 10px 16px;
+  border-radius: 8px;
+}
+.section-title {
+  background: #f3f3f3;
+  padding: 6px 16px;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+  width: fit-content;
+  margin: 0 0 8px 16px;
+}
+.card {
+  background: var(--card);
+  margin: 0 16px 12px;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.card p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #666;
+}
+.card strong {
+  color: #111;
+}
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #eee;
+  padding: 10px 0;
+  font-size: 13px;
+}
+.bottom-nav div {
+  text-align: center;
+  flex: 1;
+  color: #777;
+}
+.bottom-nav .active {
+  color: var(--accent);
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
 
+<div class="header">💰 OTC 거래 증빙</div>
+
+<div class="notice">
+KTH TRINITY OTC 거래 내역을 확인할 수 있습니다.<br>
+※ 실제 거래는 발생하지 않으며, 데모 데이터입니다.
+</div>
+
+<div class="section-title">거래완료</div>
+
+<div class="card">
+  <h3>홍길동 - OTC 송금</h3>
+  <p><strong>입력금액:</strong> 100,000 KRW</p>
+  <p><strong>환율:</strong> 1 THB = 38원</p>
+  <p><strong>환산금액:</strong> 2,631.6 THB</p>
+  <p><strong>USDT 시세:</strong> 36.5 THB</p>
+  <p><strong>예상 수량:</strong> 72.12 USDT</p>
+  <p><strong>거래시간:</strong> 2025-10-16 14:32</p>
+  <p><strong>거래상태:</strong> 완료</p>
+</div>
+
+<div class="card">
+  <h3>박지민 - OTC 송금</h3>
+  <p><strong>입력금액:</strong> 50,000 KRW</p>
+  <p><strong>환율:</strong> 1 THB = 38원</p>
+  <p><strong>환산금액:</strong> 1,315.8 THB</p>
+  <p><strong>USDT 시세:</strong> 36.5 THB</p>
+  <p><strong>예상 수량:</strong> 36.04 USDT</p>
+  <p><strong>거래시간:</strong> 2025-10-15 17:46</p>
+  <p><strong>거래상태:</strong> 완료</p>
+</div>
+
+<div class="bottom-nav">
+  <div onclick="location.href='index.html'">🏠 홈</div>
+  <div onclick="location.href='form.html'">🧾 거래등록</div>
+  <div class="active">📄 OTC증빙</div>
+  <div onclick="location.href='otc.html'">💰 OTC서비스</div>
+  <div>💬 문의</div>
+</div>
+
+</body>
+</html>
