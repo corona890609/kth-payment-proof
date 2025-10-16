@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KTH TRINITY OTC Service</title>
+<style>
+:root {
+  --brand: #111;
+  --accent: #ffd400;
+  --bg: #fafafa;
+  --card: #fff;
+  --line: #eee;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #111;
+}
+.header {
+  text-align: left;
+  padding: 20px 16px;
+  font-weight: 800;
+  font-size: 22px;
+}
+.form {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.form label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+.form input, .form select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 14px;
+}
+.result {
+  background: #f8f8f8;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.button {
+  width: 100%;
+  background: var(--accent);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.notice {
+  background: #fff7c0;
+  color: #333;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin: 10px 16px;
+  border-radius: 8px;
+}
+</style>
+</head>
+<body>
 
+<div class="header">💰 KTH TRINITY OTC Service</div>
+
+<div class="notice">
+오늘 고정 환율(1 THB = 38원)과 Bitkub 시세(1 USDT = 36.5 THB)를 기준으로 계산됩니다.<br>
+※ 실제 거래가 아닌 데모용 계산입니다.
+</div>
+
+<div class="form">
+  <label>이름</label>
+  <input type="text" placeholder="예: 홍길동">
+
+  <label>지급 통화</label>
+  <select id="currency">
+    <option value="KRW">KRW (원)</option>
+    <option value="THB">THB (바트)</option>
+  </select>
+
+  <label>결제금액 입력</label>
+  <input type="number" id="amount" placeholder="금액 입력">
+
+  <label>환율 (1 THB = 38원)</label>
+  <input type="text" id="rate" value="38" readonly>
+
+  <label>USDT 시세 (Bitkub 기준)</label>
+  <input type="text" id="usdt" value="36.5" readonly>
+
+  <div class="result" id="resultBox">
+    💡 변환 결과가 여기에 표시됩니다.
+  </div>
+
+  <button class="button" onclick="calculate()">USDT 수량 계산</button>
+</div>
+
+<script>
+function calculate() {
+  const amount = parseFloat(document.getElementById('amount').value);
+  const currency = document.getElementById('currency').value;
+  const rate = 38; // 고정 환율
+  const usdt = 36.5; // Bitkub 시세
+
+  if (!amount || amount <= 0) {
+    document.getElementById('resultBox').innerHTML = "금액을 입력하세요.";
+    return;
+  }
+
+  let thbAmount = currency === "KRW" ? (amount / rate) : amount;
+  let usdtQty = (thbAmount / usdt).toFixed(2);
+  let resultText = `
+  💰 계산 결과<br>
+  - 바트 환산: ${thbAmount.toLocaleString()} THB<br>
+  - 예상 코인 수량: <b>${usdtQty} USDT</b>
+  `;
+  document.getElementById('resultBox').innerHTML = resultText;
+}
+</script>
+
+</body>
+</html>
